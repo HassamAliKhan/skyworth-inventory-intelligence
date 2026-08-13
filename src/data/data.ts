@@ -56,8 +56,12 @@ function buildSeries(): SeriesPoint[] {
     if (t >= todayT) {
       const k = Math.max(0, weeksFromToday);
       const spread = 26 + k * 58;
-      point.p50 = Math.round(level);
-      point.band = [Math.round(level - spread), Math.round(level + spread)];
+      const floor = -260;
+      point.p50 = Math.max(floor, Math.round(level));
+      point.band = [
+        Math.max(floor, Math.round(level - spread)),
+        Math.max(floor, Math.round(level + spread)),
+      ];
     }
     points.push(point);
   }

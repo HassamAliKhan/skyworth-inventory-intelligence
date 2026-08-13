@@ -23,7 +23,7 @@ export function ProjectionChart({ pct }: { pct: number }) {
   const scrubT = dateAtPct(pct).getTime();
 
   return (
-    <section className="ii-card px-5 py-6 sm:px-7">
+    <section className="ii-card flex flex-col px-5 py-6 sm:px-7">
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
         <div className="min-w-0">
           <p className="ii-eyebrow">Projected cover · SKU-4420 · DC-East</p>
@@ -43,7 +43,7 @@ export function ProjectionChart({ pct }: { pct: number }) {
         </div>
       </div>
 
-      <div className="mt-6 h-[320px] w-full">
+      <div className="mt-6 min-h-[340px] w-full flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={projectionSeries} margin={{ top: 12, right: 12, bottom: 4, left: -12 }}>
             <CartesianGrid stroke="var(--color-hairline)" vertical={false} />
@@ -63,6 +63,7 @@ export function ProjectionChart({ pct }: { pct: number }) {
               axisLine={false}
               tickLine={false}
               width={56}
+              domain={[-300, 1600]}
             />
             <Tooltip
               contentStyle={{
@@ -110,7 +111,7 @@ export function ProjectionChart({ pct }: { pct: number }) {
               strokeDasharray="4 4"
               label={{
                 value: "Reorder point",
-                position: "insideTopRight",
+                position: "insideTopLeft",
                 fill: "var(--color-watch)",
                 fontSize: 10,
               }}
