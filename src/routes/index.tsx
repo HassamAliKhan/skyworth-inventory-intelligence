@@ -1,24 +1,65 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
+import { Header } from "@/components/inventory/Header";
+import { TimeScrubber } from "@/components/inventory/TimeScrubber";
+import { KpiStrip } from "@/components/inventory/KpiStrip";
+import { ProjectionChart } from "@/components/inventory/ProjectionChart";
+import { AiReadPanel, DataTrustPanel } from "@/components/inventory/SidePanels";
+import { RiskRegister } from "@/components/inventory/RiskRegister";
+import { TraceDrawer } from "@/components/inventory/TraceDrawer";
+import { TODAY_PCT, riskRows, type RiskRow, type Warehouse } from "@/data/data";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const title = "Inventory Intelligence — Skyworth supply engine";
+const description =
+  "An executive view of inventory position, forecast confidence and stockout risk, with every number traceable to the ledger.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const [pct, setPct] = useState(TODAY_PCT);
+  const [warehouse, setWarehouse] = useState<Warehouse>("All warehouses");
+  const [selected, setSelected] = useState<RiskRow | null>(null);
+
+  const futureMode = pct > TODAY_PCT + 0.5;
+  const rows = useMemo(
+    () => (warehouse === "All warehouses" ? riskRows : riskRows.filter((r) => r.site === warehouse)),
+    [warehouse],
+  );
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="ii-page min-h-screen">
+      <Header warehouse={warehouse} onWarehouseChange={setWarehouse} />
+
+      <main className="mx-auto max-w-[1400px] space-y-5 px-5 py-6 sm:px-8 sm:py-8">
+        <h1 className="sr-only">Inventory Intelligence</h1>
+
+        <TimeScrubber pct={pct} onChange={setPct} />
+        <KpiStrip futureMode={futureMode} />
+
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[2fr_1fr] lg:items-start">
+          <ProjectionChart pct={pct} />
+          <div className="space-y-5">
+            <AiReadPanel />
+            <DataTrustPanel />
+          </div>
+        </div>
+
+        <RiskRegister rows={rows} onSelect={setSelected} />
+      </main>
+
+      <TraceDrawer row={selected} onClose={() => setSelected(null)} />
     </div>
   );
 }
