@@ -43,7 +43,7 @@ export function ProjectionChart({ pct }: { pct: number }) {
         </div>
       </div>
 
-      <div className="mt-6 min-h-[340px] w-full flex-1">
+      <div className="mt-6 h-[380px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={projectionSeries} margin={{ top: 12, right: 12, bottom: 4, left: -12 }}>
             <CartesianGrid stroke="var(--color-hairline)" vertical={false} />
@@ -64,6 +64,7 @@ export function ProjectionChart({ pct }: { pct: number }) {
               tickLine={false}
               width={56}
               domain={[-300, 1600]}
+              ticks={[-300, 0, 400, 800, 1200, 1600]}
             />
             <Tooltip
               contentStyle={{

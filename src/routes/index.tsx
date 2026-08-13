@@ -48,7 +48,7 @@ function Index() {
         <TimeScrubber pct={pct} onChange={setPct} />
         <KpiStrip futureMode={futureMode} />
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[2fr_1fr]">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[2fr_1fr] lg:items-start">
           <ProjectionChart pct={pct} />
           <div className="space-y-5">
             <AiReadPanel />
