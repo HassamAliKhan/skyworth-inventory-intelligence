@@ -215,3 +215,8 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+@keyframes ii-slide-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
