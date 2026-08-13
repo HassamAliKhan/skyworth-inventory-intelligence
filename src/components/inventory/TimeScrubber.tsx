@@ -32,7 +32,7 @@ export function TimeScrubber({ pct, onChange }: { pct: number; onChange: (p: num
           max={100}
           step={0.5}
           aria-label="Date shown"
-          onValueChange={([v]) => onChange(v)}
+          onValueChange={(vals) => onChange(vals[0] ?? 0)}
         >
           <Slider.Track className="relative h-8 w-full grow">
             <span
